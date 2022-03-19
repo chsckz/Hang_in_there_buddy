@@ -129,13 +129,11 @@ var quotes = [
 
 var savedPosters = [];
 var currentPoster;
-let clickedId;
 
 // event listeners go here 👇
 window.onload = getRandomPoster();
 
 savePosterBtn.addEventListener('click', saveCurrentPoster);
-
 showRandomBtn.addEventListener('click', getRandomPoster);
 
 showSavedBtn.addEventListener('click', function() {
@@ -153,7 +151,6 @@ showFormBtn.addEventListener('click', showForm);
 showMainFromFormBtn.addEventListener('click', showMainPoster);
 
 makePosterBtn.addEventListener('click', createThisPoster);
-
 savedPostersGrid.addEventListener('dblclick', doubleClickToDelete);
 
 // functions and event handlers go here 👇
@@ -208,22 +205,10 @@ function createThisPoster(e) {
   showMainPoster();
 }
 
-
-function showForm() {
-  posterFormSection.classList.remove('hidden');
-  mainPosterSection.classList.add('hidden');
-}
-
-function showMainPoster() {
-  posterFormSection.classList.add('hidden');
-  mainPosterSection.classList.remove('hidden');
-}
-
 function saveCurrentPoster() {
   savedPosters.push(currentPoster);
   savePosterBtn.disabled = true;
 }
-
 
 function displaySavedPostersGrid() {
   savedPostersGrid.innerHTML = '';
@@ -236,12 +221,20 @@ function displaySavedPostersGrid() {
   }
 }
 
-savedPostersGrid.addEventListener('dblclick', doubleClickToDelete);
-
 function doubleClickToDelete(e) {
   let thisPosterId = e.target.id;
   let thisPosterIndex = thisPosterId.charAt(thisPosterId.length-1)
   savedPosters.splice(thisPosterIndex, 1);
   let deleteThis = document.querySelector(`#mini${thisPosterIndex}`);
   savedPostersGrid.removeChild(deleteThis);
+}
+
+function showForm() {
+  posterFormSection.classList.remove('hidden');
+  mainPosterSection.classList.add('hidden');
+}
+
+function showMainPoster() {
+  posterFormSection.classList.add('hidden');
+  mainPosterSection.classList.remove('hidden');
 }
