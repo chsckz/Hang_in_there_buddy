@@ -132,6 +132,7 @@ var currentPoster;
 
 // event listeners go here 👇
 window.onload = getRandomPoster();
+// window.onunload = saveLocally();
 
 savePosterBtn.addEventListener('click', saveCurrentPoster);
 showRandomBtn.addEventListener('click', getRandomPoster);
@@ -207,11 +208,13 @@ function createThisPoster(e) {
 
 function saveCurrentPoster() {
   savedPosters.push(currentPoster);
+  saveLocally();
   savePosterBtn.disabled = true;
 }
 
 function displaySavedPostersGrid() {
   savedPostersGrid.innerHTML = '';
+  retrieveLocalSaved();
   for (var i = 0; i < savedPosters.length; i++) {
     savedPostersGrid.innerHTML += `<article class="mini-poster" id="mini${i}">
   <img class="poster-img" id="miniImg-${i}" src="${savedPosters[i].imageURL}" alt="nothin' to see here">
@@ -237,4 +240,17 @@ function showForm() {
 function showMainPoster() {
   posterFormSection.classList.add('hidden');
   mainPosterSection.classList.remove('hidden');
+}
+
+function saveLocally() {
+  localStorage.clear();
+  window.localStorage.setItem('savedPosters', JSON.stringify(savedPosters))
+}
+
+function retrieveLocalSaved() {
+  let retrievedObject = window.localStorage.getItem('savedPosters');
+  let parsedSavedPosters = JSON.parse(retrievedObject)
+  for (i = 0; i < parsedSavedPosters.length; i++) {
+    savedPosters.push(parsedSavedPosters[i]);
+  }
 }
