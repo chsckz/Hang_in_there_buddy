@@ -129,19 +129,16 @@ var quotes = [
 
 var savedPosters = [];
 var currentPoster;
-let clickedId;
 
 // event listeners go here 👇
 window.onload = getRandomPoster();
 
 savePosterBtn.addEventListener('click', saveCurrentPoster);
-
 showRandomBtn.addEventListener('click', getRandomPoster);
 
 showSavedBtn.addEventListener('click', function() {
   savedPosterSection.classList.toggle('hidden');
   mainPosterSection.classList.toggle('hidden');
-  // savedPostersGrid.classList.add('saved-posters-grid');
   displaySavedPostersGrid();
 });
 
@@ -154,6 +151,7 @@ showFormBtn.addEventListener('click', showForm);
 showMainFromFormBtn.addEventListener('click', showMainPoster);
 
 makePosterBtn.addEventListener('click', createThisPoster);
+savedPostersGrid.addEventListener('dblclick', doubleClickToDelete);
 
 // functions and event handlers go here 👇
 // (we've provided one for you to get you started)!
@@ -189,7 +187,6 @@ function makePoster(imgURL, title, quote) {
   posterImg.src = currentPoster.imageURL;
   posterTitle.textContent = currentPoster.title;
   posterQuote.textContent = currentPoster.quote;
-  console.log('currentposter:', currentPoster);
 }
 
 function createThisPoster(e) {
@@ -208,6 +205,29 @@ function createThisPoster(e) {
   showMainPoster();
 }
 
+function saveCurrentPoster() {
+  savedPosters.push(currentPoster);
+  savePosterBtn.disabled = true;
+}
+
+function displaySavedPostersGrid() {
+  savedPostersGrid.innerHTML = '';
+  for (var i = 0; i < savedPosters.length; i++) {
+    savedPostersGrid.innerHTML += `<article class="mini-poster" id="mini${i}">
+  <img class="poster-img" id="miniImg-${i}" src="${savedPosters[i].imageURL}" alt="nothin' to see here">
+  <h2 class="poster-title" id="miniTitle-${i}">${savedPosters[i].title}</h2>
+  <h4 class="poster-quote" id="miniQuote-${i}">${savedPosters[i].quote}</h4>
+  </article>`;
+  }
+}
+
+function doubleClickToDelete(e) {
+  let thisPosterId = e.target.id;
+  let thisPosterIndex = thisPosterId.charAt(thisPosterId.length-1)
+  savedPosters.splice(thisPosterIndex, 1);
+  let deleteThis = document.querySelector(`#mini${thisPosterIndex}`);
+  savedPostersGrid.removeChild(deleteThis);
+}
 
 function showForm() {
   posterFormSection.classList.remove('hidden');
@@ -217,24 +237,4 @@ function showForm() {
 function showMainPoster() {
   posterFormSection.classList.add('hidden');
   mainPosterSection.classList.remove('hidden');
-}
-
-function saveCurrentPoster() {
-  console.log('does this save?', currentPoster);
-  savedPosters.push(currentPoster);
-  savePosterBtn.disabled = true;
-  console.log(savedPosters);
-}
-
-
-function displaySavedPostersGrid() {
-  savedPostersGrid.innerHTML = '';
-  for (var i = 0; i < savedPosters.length; i++) {
-    console.log(savedPosters[i]);
-    savedPostersGrid.innerHTML += `<article class="mini-poster">
-  <img class="poster-img" id="miniImg-${i}" src="${savedPosters[i].imageURL}" alt="nothin' to see here">
-  <h2 class="poster-title">${savedPosters[i].title}</h2>
-  <h4 class="poster-quote">${savedPosters[i].quote}</h4>
-  </article>`;
-  }
 }
