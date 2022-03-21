@@ -226,7 +226,7 @@ function displaySavedPostersGrid() {
 
 function doubleClickToDelete(e) {
   let thisPosterId = e.target.id;
-  let thisPosterIndex = thisPosterId.charAt(thisPosterId.length-1)
+  let thisPosterIndex = thisPosterId.match(/[0-9]+$/);
   savedPosters.splice(thisPosterIndex, 1);
   let deleteThis = document.querySelector(`#mini${thisPosterIndex}`);
   savedPostersGrid.removeChild(deleteThis);
